@@ -1,10 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
-
-namespace SexyCurves.Enumerators
+﻿namespace SexyCurves.Enumerators
 {
     /// <summary>
-    /// Represents curves in the main module.
+    ///     Represents curves in the main module.
     /// </summary>
     public enum SexyCurvesMainModuleEnum
     {
