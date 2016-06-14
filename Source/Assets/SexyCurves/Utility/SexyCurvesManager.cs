@@ -45,6 +45,15 @@ namespace SexyCurves.Utility
 
         #endregion
 
+        #region Functions
+
+        public void ApplyFunctionToCurves()
+        {
+            Debug.LogWarning("Applying Function to Curves ... not yet!");
+        }
+
+        #endregion
+
         #region Setter
 
         /// <summary>
@@ -107,7 +116,7 @@ namespace SexyCurves.Utility
         ///     Returns the current module target.
         /// </summary>
         /// <returns>Target module</returns>
-        public SexyCurvesModuleEnum GetTargetCurvesModule()
+        public SexyCurvesModuleEnum GetTargetModule()
         {
             return _targetModule;
         }
