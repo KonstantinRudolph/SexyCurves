@@ -4,10 +4,11 @@
 // 
 // By Konstantin Rudolph
 // 
-// Last modified at 10:56, on 14.06.2016
+// Last modified at 11:40, on 14.06.2016
 
 using JetBrains.Annotations;
 using SexyCurves.Enumerators;
+using SexyCurves.Utility;
 using UnityEditor;
 using UnityEngine;
 
@@ -36,6 +37,16 @@ namespace SexyCurves.CustomEditors
             //y(t) = y_0 * sin(2*PI*f * t)
         }
 
+        private void HarmonicWaveGui()
+        {
+            EditorGUILayout.LabelField(_functionType == SexyCurvesFunctionTypeEnum.Sine
+                ? "Harmonic Sine Wave Settings"
+                : "Harmonic Cosine Wave");
+            //_amplitude = EditorGUILayout.FloatField("Amplitude:", _amplitude);
+            //_frequency = EditorGUILayout.FloatField("Frequency:", _frequency);
+            //SinusWave: y(t) = y_0 * sin(2*PI*f * t)
+        }
+
         private void ExponentialSettingsGui()
         {
             EditorGUILayout.LabelField("Exponential Function Settings:");
@@ -52,8 +63,10 @@ namespace SexyCurves.CustomEditors
 
         #region Variables
 
-        // The particle system which is targeted from modifications.
-        private ParticleSystem _targetParticleSystem;
+        /// <summary>
+        ///     The manager object wich will modify the target particle system.
+        /// </summary>
+        private SexyCurvesManager _sexyCurvesManager = new SexyCurvesManager();
         // The module in which one or more curve shall be modified.
         private SexyCurvesModuleEnum _targetModule = SexyCurvesModuleEnum.MainModule;
         // The sub-module if 'MainModule' is chosen.
@@ -87,11 +100,10 @@ namespace SexyCurves.CustomEditors
         // ReSharper disable once ArrangeTypeMemberModifiers
         void OnGUI()
         {
-            _targetParticleSystem =
-                EditorGUILayout.ObjectField(
-                    new GUIContent("Target Particle System:",
-                        "The target particle system on which one or more curve shall be modified."),
-                    _targetParticleSystem, typeof (ParticleSystem), true) as ParticleSystem;
+            _sexyCurvesManager.SetParticleSystem(EditorGUILayout.ObjectField(
+                new GUIContent("Target Particle System:",
+                    "The target particle system on which one or more curve shall be modified."),
+                _targetParticleSystem, typeof (ParticleSystem), true) as ParticleSystem);
             _targetModule =
                 (SexyCurvesModuleEnum)
                     EditorGUILayout.EnumPopup(
@@ -132,10 +144,10 @@ namespace SexyCurves.CustomEditors
                     break;
             }
 
-            //groupEnabled = EditorGUILayout.BeginToggleGroup("Optional Settings", groupEnabled);
-            //myBool = EditorGUILayout.Toggle("Toggle", myBool);
-            //myFloat = EditorGUILayout.Slider("Slider", myFloat, -3, 3);
-            //EditorGUILayout.EndToggleGroup();
+            if (GUILayout.Button("Apply Function"))
+            {
+                //Do Stuff
+            }
         }
 
         #endregion
