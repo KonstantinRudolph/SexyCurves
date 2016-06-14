@@ -30,11 +30,18 @@ namespace SexyCurves.Utility
         ///     Sets the target particle system on which functions shall be applied to.
         /// </summary>
         /// <param name="particleSystem">The target particle system.</param>
-        public void SetParticleSystem(ParticleSystem particleSystem)
+        public void SetTargetParticleSystem(ParticleSystem particleSystem)
         {
             _targetParticleReference = particleSystem;
         }
-
+        /// <summary>
+        ///     Getter returns target particle system.
+        /// </summary>
+        /// <returns>Target particle system.</returns>
+        public ParticleSystem GetTargetParticleSystem()
+        {
+            return _targetParticleReference;
+        }
         #endregion
     }
 }

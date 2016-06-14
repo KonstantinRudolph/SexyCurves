@@ -100,10 +100,10 @@ namespace SexyCurves.CustomEditors
         // ReSharper disable once ArrangeTypeMemberModifiers
         void OnGUI()
         {
-            _sexyCurvesManager.SetParticleSystem(EditorGUILayout.ObjectField(
+            _sexyCurvesManager.SetTargetParticleSystem(EditorGUILayout.ObjectField(
                 new GUIContent("Target Particle System:",
                     "The target particle system on which one or more curve shall be modified."),
-                _targetParticleSystem, typeof (ParticleSystem), true) as ParticleSystem);
+                _sexyCurvesManager.GetTargetParticleSystem(), typeof (ParticleSystem), true) as ParticleSystem);
             _targetModule =
                 (SexyCurvesModuleEnum)
                     EditorGUILayout.EnumPopup(
