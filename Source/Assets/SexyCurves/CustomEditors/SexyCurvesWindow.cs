@@ -96,6 +96,8 @@ namespace SexyCurves.CustomEditors
                 new GUIContent("Target Particle System:",
                     "The target particle system on which one or more curve shall be modified."),
                 _sexyCurvesManager.GetTargetParticleSystem(), typeof (ParticleSystem), true) as ParticleSystem);
+
+            EditorGUILayout.BeginHorizontal();
             _sexyCurvesManager.SetTargetModule((SexyCurvesModuleEnum)
                 EditorGUILayout.EnumPopup(
                     new GUIContent("Target Module:", "Which module of the particle system shall be modified."),
@@ -104,11 +106,9 @@ namespace SexyCurves.CustomEditors
             if (_sexyCurvesManager.GetTargetModule() == SexyCurvesModuleEnum.MainModule)
             {
                 _sexyCurvesManager.SetTargetSubMainModule((SexyCurvesMainModuleEnum)
-                    EditorGUILayout.EnumPopup(
-                        new GUIContent("Target Sub-Main-Module:",
-                            "Which sub-module of the particle systems main-module shall be modified."),
-                        _sexyCurvesManager.GetTargetSubMainModule()));
+                    EditorGUILayout.EnumPopup(_sexyCurvesManager.GetTargetSubMainModule()));
             }
+            EditorGUILayout.EndHorizontal();
             _sexyCurvesManager.SetTargetCurves((SexyCurvesCurveEnum)
                 EditorGUILayout.EnumPopup(new GUIContent("Target Axis:", "Which axis-curves shall be modified."),
                     _sexyCurvesManager.GetTargetCurves()));
