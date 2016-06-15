@@ -43,6 +43,11 @@ namespace SexyCurves.Utility
         /// </summary>
         private SexyCurvesFunctionTypeEnum _targetFunctionType = SexyCurvesFunctionTypeEnum.Cosine;
 
+        /// <summary>
+        ///     The amount of keys which shall be used on the curve.
+        /// </summary>
+        private uint _keyAmount = 1;
+
         #endregion
 
         #region Functions
@@ -100,6 +105,15 @@ namespace SexyCurves.Utility
         {
             _targetFunctionType = functionTypeEnum;
         }
+
+        /// <summary>
+        ///     Sets the amount of keys which shall be used on the curve.
+        /// </summary>
+        /// <param name="amount">The amount of keys</param>
+        public void SetKeyAmount(uint amount)
+        {
+            _keyAmount = amount;
+        }
         #endregion
 
         #region Getter
@@ -139,9 +153,22 @@ namespace SexyCurves.Utility
             return _targetCurves;
         }
 
+        /// <summary>
+        ///     Returns the type of the current chosen function.
+        /// </summary>
+        /// <returns>The targeted function</returns>
         public SexyCurvesFunctionTypeEnum GetTargetFunction()
         {
             return _targetFunctionType;
+        }
+
+        /// <summary>
+        ///     Returns the current amount of keys which shall be applied to the curve.
+        /// </summary>
+        /// <returns>Amount of keys.</returns>
+        public uint GetKeyAmount()
+        {
+            return _keyAmount;
         }
         #endregion
     }

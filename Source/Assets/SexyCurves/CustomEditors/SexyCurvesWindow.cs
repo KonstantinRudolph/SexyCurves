@@ -1,10 +1,10 @@
 ﻿// SexyCurvesWindow.cs - SexyCurves
 // 
-// Created at 16:49, on 03.06.2016
+// Created at 1:52 PM, on 14.06.2016
 // 
 // By Konstantin Rudolph
 // 
-// Last modified at 13:46, on 14.06.2016
+// Last modified at 1:46 AM, on 16.06.2016
 
 using JetBrains.Annotations;
 using SexyCurves.Enumerators;
@@ -24,7 +24,7 @@ namespace SexyCurves.CustomEditors
         /// <summary>
         ///     The manager object wich will modify the target particle system.
         /// </summary>
-        private SexyCurvesManager _sexyCurvesManager = new SexyCurvesManager();
+        private readonly SexyCurvesManager _sexyCurvesManager = new SexyCurvesManager();
 
         #endregion
 
@@ -48,9 +48,10 @@ namespace SexyCurves.CustomEditors
 
         private void HarmonicWaveGui()
         {
-            EditorGUILayout.LabelField(_sexyCurvesManager.GetTargetFunction() == SexyCurvesFunctionTypeEnum.Sine
-                ? "Harmonic Sine Wave Settings"
-                : "Harmonic Cosine Wave");
+            EditorGUILayout.LabelField(
+                _sexyCurvesManager.GetTargetFunction() == SexyCurvesFunctionTypeEnum.Sine
+                    ? "Harmonic Sine Wave Settings"
+                    : "Harmonic Cosine Wave");
             //_amplitude = EditorGUILayout.FloatField("Amplitude:", _amplitude);
             //_frequency = EditorGUILayout.FloatField("Frequency:", _frequency);
             //SinusWave: y(t) = y_0 * sin(2*PI*f * t)
@@ -77,7 +78,7 @@ namespace SexyCurves.CustomEditors
         /// </summary>
         [MenuItem("Sexy Curves/Sexy Curves Window")]
         [UsedImplicitly]
-        static void Init()
+        private static void Init()
         {
             var scWindow = GetWindow<SexyCurvesWindow>();
             scWindow.titleContent = new GUIContent("Sexy Curves");
@@ -92,32 +93,55 @@ namespace SexyCurves.CustomEditors
         // ReSharper disable once ArrangeTypeMemberModifiers
         void OnGUI()
         {
-            _sexyCurvesManager.SetTargetParticleSystem(EditorGUILayout.ObjectField(
-                new GUIContent("Target Particle System:",
-                    "The target particle system on which one or more curve shall be modified."),
-                _sexyCurvesManager.GetTargetParticleSystem(), typeof (ParticleSystem), true) as ParticleSystem);
+            _sexyCurvesManager.SetTargetParticleSystem(
+                EditorGUILayout.ObjectField(
+                    new GUIContent(
+                        "Target Particle System:",
+                        "The target particle system on which one or more curve shall be modified."),
+                    _sexyCurvesManager.GetTargetParticleSystem(),
+                    typeof (ParticleSystem),
+                    true) as ParticleSystem);
 
             EditorGUILayout.BeginHorizontal();
-            _sexyCurvesManager.SetTargetModule((SexyCurvesModuleEnum)
-                EditorGUILayout.EnumPopup(
-                    new GUIContent("Target Module:", "Which module of the particle system shall be modified."),
-                    _sexyCurvesManager.GetTargetModule()));
+            _sexyCurvesManager.SetTargetModule(
+                (SexyCurvesModuleEnum)
+                    EditorGUILayout.EnumPopup(
+                        new GUIContent("Target Module:", "Which module of the particle system shall be modified."),
+                        _sexyCurvesManager.GetTargetModule()));
 
             if (_sexyCurvesManager.GetTargetModule() == SexyCurvesModuleEnum.MainModule)
             {
-                _sexyCurvesManager.SetTargetSubMainModule((SexyCurvesMainModuleEnum)
-                    EditorGUILayout.EnumPopup(_sexyCurvesManager.GetTargetSubMainModule()));
+                _sexyCurvesManager.SetTargetSubMainModule(
+                    (SexyCurvesMainModuleEnum)
+                        EditorGUILayout.EnumPopup(_sexyCurvesManager.GetTargetSubMainModule()));
             }
             EditorGUILayout.EndHorizontal();
-            _sexyCurvesManager.SetTargetCurves((SexyCurvesCurveEnum)
-                EditorGUILayout.EnumPopup(new GUIContent("Target Axis:", "Which axis-curves shall be modified."),
-                    _sexyCurvesManager.GetTargetCurves()));
+            _sexyCurvesManager.SetTargetCurves(
+                (SexyCurvesCurveEnum)
+                    EditorGUILayout.EnumPopup(
+                        new GUIContent("Target Axis:", "Which axis-curves shall be modified."),
+                        _sexyCurvesManager.GetTargetCurves()));
 
-            _sexyCurvesManager.SetTargetFunction((SexyCurvesFunctionTypeEnum)
-                EditorGUILayout.EnumPopup(
-                    new GUIContent("Target Function:",
-                        "Which function-type shall be applied onto the selected curve(s)."),
-                    _sexyCurvesManager.GetTargetFunction()));
+            _sexyCurvesManager.SetTargetFunction(
+                (SexyCurvesFunctionTypeEnum)
+                    EditorGUILayout.EnumPopup(
+                        new GUIContent(
+                            "Target Function:",
+                            "Which function-type shall be applied onto the selected curve(s)."),
+                        _sexyCurvesManager.GetTargetFunction()));
+            int amount = EditorGUILayout.IntField(
+                new GUIContent("Key Amount:", "The amount of keys which shall be applied."),
+                (int) _sexyCurvesManager.GetKeyAmount());
+
+            if (amount >= 1)
+            {
+                _sexyCurvesManager.SetKeyAmount((uint)amount);
+            }
+            else
+            {
+                Debug.LogWarning("The key amount has to be at least 1, which will result in a line.");
+                Repaint();
+            }
 
             EditorGUILayout.Separator();
             switch (_sexyCurvesManager.GetTargetFunction())
