@@ -114,13 +114,19 @@ namespace SexyCurves.CustomEditors
                 _sexyCurvesManager.SetTargetSubMainModule(
                     (SexyCurvesMainModuleEnum)
                         EditorGUILayout.EnumPopup(_sexyCurvesManager.GetTargetSubMainModule()));
+                EditorGUILayout.EndHorizontal();
+                //Only one axis on main modules
+                _sexyCurvesManager.SetTargetCurves(SexyCurvesCurveEnum.X);
             }
-            EditorGUILayout.EndHorizontal();
-            _sexyCurvesManager.SetTargetCurves(
+            else
+            {
+                EditorGUILayout.EndHorizontal();
+                _sexyCurvesManager.SetTargetCurves(
                 (SexyCurvesCurveEnum)
                     EditorGUILayout.EnumPopup(
                         new GUIContent("Target Axis:", "Which axis-curves shall be modified."),
                         _sexyCurvesManager.GetTargetCurves()));
+            }
 
             _sexyCurvesManager.SetTargetFunction(
                 (SexyCurvesFunctionTypeEnum)
