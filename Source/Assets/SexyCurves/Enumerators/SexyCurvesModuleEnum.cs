@@ -16,7 +16,7 @@ namespace SexyCurves.Enumerators
         MainModule,
         EmissionModule,
         VelocityOverLifetimeModule,
-        LimitVelocityOverLifetime,
+        LimitVelocityOverLifetimeModule,
         InheritVelocityModule,
         ForceOverLifetimeModule,
         SizeOverLifetimeModule,
