@@ -36,17 +36,21 @@ namespace SexyCurves.Utility
         #endregion
 
         #region Functions
-
-        public float CalculateHeigthAtSecond(float second)
+        /// <summary>
+        ///     Function returns the value of the sine wave (represented by the class) at a given time in seconds.
+        /// </summary>
+        /// <param name="seconds">The time in seconds</param>
+        /// <returns></returns>
+        public float CalculateHeightAtSecond(float seconds)
         {
-            if (second < 0.0f)
+            if (seconds < 0.0f)
             {
-                throw new ArgumentOutOfRangeException("Second parameter cannot be smaller than 0.0f");
+                throw new ArgumentOutOfRangeException("The seconds parameter cannot be smaller than 0.0f");
             }
 
             float value = 0.0f;
 
-            value = _amplitude*Mathf.Sin(2*Mathf.PI*_frequency*second) + _yDisplacement;
+            value = _amplitude*Mathf.Sin(2*Mathf.PI*_frequency*seconds) + _yDisplacement;
 
             return value;
         }

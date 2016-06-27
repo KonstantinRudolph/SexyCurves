@@ -131,6 +131,9 @@ namespace SexyCurves.Utility
         {
             //TODO:
             Debug.LogWarning("Unimplemented Method ApplyFunctionToEmissionModule in SexyCurvesManager called!");
+            
+            ParticleSystem.EmissionModule module = _targetParticleReference.emission;
+            module.rate = MakeSexyCurve();
         }
 
         /// <summary>
@@ -251,6 +254,15 @@ namespace SexyCurves.Utility
         {
             //NOT_YET_POSSIBLE:
             Debug.LogWarning("The Function 'ApplyFunctionToStartSpeedCurve' doesn't have functionality yet, due to the lack of property exposure on the Unity Shuriken API part");
+        }
+
+        private ParticleSystem.MinMaxCurve MakeSexyCurve()
+        {
+            ParticleSystem.MinMaxCurve curve = new ParticleSystem.MinMaxCurve();
+
+            //TODO: apply target function
+
+            return curve;
         }
 
         /// <summary>
