@@ -34,7 +34,7 @@ namespace SexyCurves.Utility
         /// <summary>
         ///     The module in which one or more curve shall be modified.
         /// </summary>
-        private SexyCurvesModuleEnum _targetModule = SexyCurvesModuleEnum.MainModule;
+        private SexyCurvesModuleEnum _targetModule = SexyCurvesModuleEnum.EmissionModule;
 
 
         /// <summary>
@@ -214,44 +214,43 @@ namespace SexyCurves.Utility
         private void ApplyFunctionToTextureSheetAnimationModule()
         {
             //TODO:
-            Debug.LogWarning(
-                "Unimplemented Method ApplyFunctionToTextureSheetAnimationModule in SexyCurvesManager called!");
+            Debug.LogWarning("Unimplemented Method ApplyFunctionToTextureSheetAnimationModule in SexyCurvesManager called!");
         }
 
         /// <summary>
-        ///     Applies the chosen function to the startLifetimeCurve in the main module.
+        ///     NOT YET POSSIBLE | Applies the chosen function to the startLifetimeCurve in the main module.
         /// </summary>
         private void ApplyFunctionToStartLifetimeCurve()
         {
-            //TODO:
-            Debug.LogWarning("Unimplemented Method ApplyFunctionToStartLifetimeCurve in SexyCurvesManager called!");
+            //NOT_YET_POSSIBLE:
+            Debug.LogWarning("The Function 'ApplyFunctionToStartLifetimeCurve' doesn't have functionality yet, due to the lack of property exposure on the Unity Shuriken API part");
         }
 
         /// <summary>
-        ///     Applies the chosen function to the startRotationCurve in the main module.
+        ///     NOT YET POSSIBLE | Applies the chosen function to the startRotationCurve in the main module.
         /// </summary>
         private void ApplyFunctionToStartRotationCurve()
         {
-            //TODO:
-            Debug.LogWarning("Unimplemented Method ApplyFunctionToStartRotationCurve in SexyCurvesManager called!");
+            //NOT_YET_POSSIBLE:
+            Debug.LogWarning("The Function 'ApplyFunctionToStartRotationCurve' doesn't have functionality yet, due to the lack of property exposure on the Unity Shuriken API part");
         }
 
         /// <summary>
-        ///     Applies the chosen function to the startSizeCurve in the main module.
+        ///    NOT YET POSSIBLE | Applies the chosen function to the startSizeCurve in the main module.
         /// </summary>
         private void ApplyFunctionToStartSizeCurve()
         {
-            //TODO:
-            Debug.LogWarning("Unimplemented Method ApplyFunctionToStartSizeCurve in SexyCurvesManager called!");
+            //NOT_YET_POSSIBLE:
+            Debug.LogWarning("The Function 'ApplyFunctionToStartSizeCurve' doesn't have functionality yet, due to the lack of property exposure on the Unity Shuriken API part");
         }
 
         /// <summary>
-        ///     Applies the chosen function to the startSpeedCurve in the main module.
+        ///     NOT YET POSSIBLE | Applies the chosen function to the startSpeedCurve in the main module.
         /// </summary>
         private void ApplyFunctionToStartSpeedCurve()
         {
-            //TODO:
-            Debug.LogWarning("Unimplemented Method ApplyFunctionToStartSpeedCurve in SexyCurvesManager called!");
+            //NOT_YET_POSSIBLE:
+            Debug.LogWarning("The Function 'ApplyFunctionToStartSpeedCurve' doesn't have functionality yet, due to the lack of property exposure on the Unity Shuriken API part");
         }
 
         /// <summary>
