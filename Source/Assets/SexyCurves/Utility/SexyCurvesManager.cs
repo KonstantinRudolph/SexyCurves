@@ -23,6 +23,12 @@ namespace SexyCurves.Utility
         private uint _keyAmount = 1;
 
         /// <summary>
+        ///     The Scale of the Curve System.
+        /// </summary>
+        [Range(0.1f, float.MaxValue)]
+        private float _scalar = 1.0f;
+
+        /// <summary>
         ///     The axis-curves which shall be modified.
         /// </summary>
         private SexyCurvesCurveEnum _targetCurves = SexyCurvesCurveEnum.XYZ;
@@ -48,8 +54,14 @@ namespace SexyCurves.Utility
         /// </summary>
         private SexyCurvesMainModuleEnum _targetSubMainModule = SexyCurvesMainModuleEnum.StartLifetime;
 
-        private HarmonicSineWave _harmonicSineWave = new HarmonicSineWave();
+        public HarmonicSineWave HarmonicSineWave { get; private set; }
+            //= new HarmonicSineWave();
 
+
+        public SexyCurvesManager()
+        {
+            this.HarmonicSineWave = new HarmonicSineWave();
+        }
 
         /// <summary>
         ///     Applies the chosen function to the chosen module and curves.
@@ -368,20 +380,34 @@ namespace SexyCurves.Utility
         private ParticleSystem.MinMaxCurve MakeSexyCurve()
         {
             AnimationCurve animCurve = new AnimationCurve();
+            //TODO: Add Smart KeyAmount on _keyAmount == 0
             if (_keyAmount == 1)
             {
                 animCurve.AddKey(0.0f, GetFunctionDelegate()(0.0f));
             }
-            if (_keyAmount == 2)
+            else if (_keyAmount == 2)
             {
                 animCurve.AddKey(0.0f, GetFunctionDelegate()(0.0f));
-                animCurve.AddKey(0.2f, GetFunctionDelegate()(0.2f));
-                animCurve.AddKey(0.4f, GetFunctionDelegate()(0.4f));
-                animCurve.AddKey(0.6f, GetFunctionDelegate()(0.6f));
-                animCurve.AddKey(0.8f, GetFunctionDelegate()(0.8f));
                 animCurve.AddKey(1.0f, GetFunctionDelegate()(1.0f));
             }
-            ParticleSystem.MinMaxCurve curve = new ParticleSystem.MinMaxCurve(1.0f, animCurve);
+            else
+            {
+                float stride = 1.0f/(_keyAmount - 1);
+                for (int i = 0; i < _keyAmount; ++i)
+                {
+                    float val = 0.0f;
+                    if (i == _keyAmount - 1)
+                    {
+                        val = 1.0f; //avoid displacement due to floating point errors
+                    }
+                    else
+                    {
+                        val = i * stride;
+                    }
+                    animCurve.AddKey(val, GetFunctionDelegate()(val));
+                }
+            }
+            ParticleSystem.MinMaxCurve curve = new ParticleSystem.MinMaxCurve(_scalar, animCurve);
             return curve;
         }
 
@@ -433,10 +459,19 @@ namespace SexyCurves.Utility
         /// <summary>
         ///     Sets the amount of keys which shall be used on the curve.
         /// </summary>
-        /// <param name="amount">The amount of keys</param>
+        /// <param name="amount">The amount of keys.</param>
         public void SetKeyAmount(uint amount)
         {
             _keyAmount = amount;
+        }
+
+        /// <summary>
+        ///     Sets the scalar of the curve.
+        /// </summary>
+        /// <param name="scalar">the new scalar value.</param>
+        public void SetScalar(float scalar)
+        {
+            _scalar = scalar;
         }
 
         /// <summary>
@@ -450,7 +485,7 @@ namespace SexyCurves.Utility
 
         private Func<float, float> GetFunctionDelegate()
         {
-            return _harmonicSineWave.CalculateHeightAtSecond;
+            return HarmonicSineWave.CalculateHeightAtSecond;
         }
 
         /// <summary>
@@ -496,6 +531,15 @@ namespace SexyCurves.Utility
         public uint GetKeyAmount()
         {
             return _keyAmount;
+        }
+
+        /// <summary>
+        ///     Returns the current scalar of the curve.
+        /// </summary>
+        /// <returns></returns>
+        public float GetScalar()
+        {
+            return _scalar;
         }
     }
 }

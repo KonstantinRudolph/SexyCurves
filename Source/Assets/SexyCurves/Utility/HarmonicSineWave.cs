@@ -17,12 +17,13 @@ namespace SexyCurves.Utility
     public class HarmonicSineWave
     {
         #region Variables
-
+        
         /// <summary>
         ///     The amplitude of the sine wave.
         /// </summary>
-        private float _amplitude = 1.0f;
-
+        [Range(0.0f,1.0f)]
+        private float _amplitude = 0.5f;
+        
         /// <summary>
         ///     The frequency defines the amount of oscillations per second.
         /// </summary>
@@ -31,7 +32,8 @@ namespace SexyCurves.Utility
         /// <summary>
         ///     The displacement on the y-axis.
         /// </summary>
-        private float _yDisplacement = 0.0f;
+        [Range(0.0f,1.0f)]
+        private float _yDisplacement = 0.5f;
 
         #endregion
 
