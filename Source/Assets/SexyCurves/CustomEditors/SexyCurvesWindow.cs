@@ -30,24 +30,26 @@ namespace SexyCurves.CustomEditors
 
         #region privateFunctions
 
+        /// <summary>
+        ///     Creates the GUI for the cosine settings.
+        /// </summary>
         private void CosineSettingsGui()
         {
             EditorGUILayout.LabelField("Cosine Function Settings:");
-            
-            //_amplitude = EditorGUILayout.FloatField("Amplitude:", _amplitude);
-            //_frequency = EditorGUILayout.FloatField("Frequency:", _frequency);
-            //y(t) = y_0 * cos(2*PI*f * t)
+            _sexyCurvesManager.HarmonicSineWave.SetAmplitude(EditorGUILayout.FloatField("Amplitude:", _sexyCurvesManager.HarmonicSineWave.GetAmplitude()));
+            _sexyCurvesManager.HarmonicSineWave.SetFrequency(EditorGUILayout.FloatField("Frequency:", _sexyCurvesManager.HarmonicSineWave.GetFrequency()));
+            _sexyCurvesManager.HarmonicSineWave.SetYDisplacement(EditorGUILayout.FloatField("Y-Displacement:", _sexyCurvesManager.HarmonicSineWave.GetYDisplacement()));
         }
 
+        /// <summary>
+        ///     Creates the GUI for the sine settings.
+        /// </summary>
         private void SineSettingsGui()
         {
             EditorGUILayout.LabelField("Sine Function Settings:");
             _sexyCurvesManager.HarmonicSineWave.SetAmplitude(EditorGUILayout.FloatField("Amplitude:", _sexyCurvesManager.HarmonicSineWave.GetAmplitude()));
             _sexyCurvesManager.HarmonicSineWave.SetFrequency(EditorGUILayout.FloatField("Frequency:", _sexyCurvesManager.HarmonicSineWave.GetFrequency()));
             _sexyCurvesManager.HarmonicSineWave.SetYDisplacement(EditorGUILayout.FloatField("Y-Displacement:", _sexyCurvesManager.HarmonicSineWave.GetYDisplacement()));
-            //_amplitude = EditorGUILayout.FloatField("Amplitude:", _amplitude);
-            //_frequency = EditorGUILayout.FloatField("Frequency:", _frequency);
-            //y(t) = y_0 * sin(2*PI*f * t)
         }
 
         private void HarmonicWaveGui()
@@ -179,6 +181,9 @@ namespace SexyCurves.CustomEditors
                     PolynomialSettingsGui();
                     break;
             }
+
+            float tempXDisplacement = EditorGUILayout.FloatField("X-Displacement :", _sexyCurvesManager.GetXDisplacement());
+            _sexyCurvesManager.SetXDisplacement(tempXDisplacement);
 
             if (GUILayout.Button("Apply Function"))
             {

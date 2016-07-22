@@ -57,6 +57,25 @@ namespace SexyCurves.Utility
             return value;
         }
 
+        /// <summary>
+        ///     Since the sin(x) = 
+        /// </summary>
+        /// <param name="seconds"></param>
+        /// <returns></returns>
+        public float CalculateHeightAtSecondAndConvertToCosine(float seconds)
+        {
+            if (seconds < 0.0f)
+            {
+                throw new ArgumentOutOfRangeException("The seconds parameter cannot be smaller than 0.0f");
+            }
+
+            float value = 0.0f;
+
+            value = _amplitude * Mathf.Sin((Mathf.PI / 2.0f) - (2 * Mathf.PI * _frequency * seconds)) + _yDisplacement;
+
+            return value;
+        }
+
         #endregion
 
         #region Setters

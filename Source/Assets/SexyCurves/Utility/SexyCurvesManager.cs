@@ -25,8 +25,7 @@ namespace SexyCurves.Utility
         /// <summary>
         ///     The Scale of the Curve System.
         /// </summary>
-        [Range(0.1f, float.MaxValue)]
-        private float _scalar = 1.0f;
+        [Range(0.1f, float.MaxValue)] private float _scalar = 1.0f;
 
         /// <summary>
         ///     The axis-curves which shall be modified.
@@ -54,14 +53,23 @@ namespace SexyCurves.Utility
         /// </summary>
         private SexyCurvesMainModuleEnum _targetSubMainModule = SexyCurvesMainModuleEnum.StartLifetime;
 
-        public HarmonicSineWave HarmonicSineWave { get; private set; }
-            //= new HarmonicSineWave();
+        /// <summary>
+        ///     The functions displacement on the x-axis.
+        /// </summary>
+        private float _xDisplacement = 0.0f;
 
-
+        /// <summary>
+        ///     Constructor.
+        /// </summary>
         public SexyCurvesManager()
         {
-            this.HarmonicSineWave = new HarmonicSineWave();
+            HarmonicSineWave = new HarmonicSineWave();
         }
+
+        /// <summary>
+        ///     HarminicSineWave Property.
+        /// </summary>
+        public HarmonicSineWave HarmonicSineWave { get; private set; }
 
         /// <summary>
         ///     Applies the chosen function to the chosen module and curves.
@@ -73,7 +81,7 @@ namespace SexyCurves.Utility
                 Debug.LogWarning("Couldn't apply function to curves particle system isn't set.");
                 return;
             }
-            
+
             Debug.LogWarning("Applying Function to Curves ... not yet!");
             switch (_targetModule)
             {
@@ -140,8 +148,8 @@ namespace SexyCurves.Utility
         /// </summary>
         private void ApplyFunctionToEmissionModule()
         {
-            ParticleSystem.EmissionModule module = _targetParticleReference.emission;
-            ParticleSystem.MinMaxCurve c = MakeSexyCurve();
+            var module = _targetParticleReference.emission;
+            var c = MakeSexyCurve();
             module.rate = c;
         }
 
@@ -150,7 +158,7 @@ namespace SexyCurves.Utility
         /// </summary>
         private void ApplyFunctionToVelocityOverLifetimeModule()
         {
-            ParticleSystem.VelocityOverLifetimeModule module = _targetParticleReference.velocityOverLifetime;
+            var module = _targetParticleReference.velocityOverLifetime;
             switch (_targetCurves)
             {
                 case SexyCurvesCurveEnum.XYZ:
@@ -182,7 +190,7 @@ namespace SexyCurves.Utility
         /// </summary>
         private void ApplyFunctionToLimitVelocityOverLifetimeModule()
         {
-            ParticleSystem.LimitVelocityOverLifetimeModule module = _targetParticleReference.limitVelocityOverLifetime;
+            var module = _targetParticleReference.limitVelocityOverLifetime;
             switch (_targetCurves)
             {
                 case SexyCurvesCurveEnum.XYZ:
@@ -214,7 +222,7 @@ namespace SexyCurves.Utility
         /// </summary>
         private void ApplyFunctionToInheritVelocityModule()
         {
-            ParticleSystem.InheritVelocityModule module = _targetParticleReference.inheritVelocity;
+            var module = _targetParticleReference.inheritVelocity;
             module.curve = MakeSexyCurve();
         }
 
@@ -223,7 +231,7 @@ namespace SexyCurves.Utility
         /// </summary>
         private void ApplyFunctionToForceOverLifetimeModule()
         {
-            ParticleSystem.ForceOverLifetimeModule module = _targetParticleReference.forceOverLifetime;
+            var module = _targetParticleReference.forceOverLifetime;
             switch (_targetCurves)
             {
                 case SexyCurvesCurveEnum.XYZ:
@@ -255,7 +263,7 @@ namespace SexyCurves.Utility
         /// </summary>
         private void ApplyFunctionToSizeOverLifetimeModule()
         {
-            ParticleSystem.SizeOverLifetimeModule module = _targetParticleReference.sizeOverLifetime;
+            var module = _targetParticleReference.sizeOverLifetime;
             module.size = MakeSexyCurve();
         }
 
@@ -264,7 +272,7 @@ namespace SexyCurves.Utility
         /// </summary>
         private void ApplyFunctionToSizeBySpeedModule()
         {
-            ParticleSystem.SizeBySpeedModule module = _targetParticleReference.sizeBySpeed;
+            var module = _targetParticleReference.sizeBySpeed;
             module.size = MakeSexyCurve();
         }
 
@@ -273,7 +281,7 @@ namespace SexyCurves.Utility
         /// </summary>
         private void ApplyFunctionToRotationOverLifetimeModule()
         {
-            ParticleSystem.RotationOverLifetimeModule module = _targetParticleReference.rotationOverLifetime;
+            var module = _targetParticleReference.rotationOverLifetime;
             switch (_targetCurves)
             {
                 case SexyCurvesCurveEnum.XYZ:
@@ -305,7 +313,7 @@ namespace SexyCurves.Utility
         /// </summary>
         private void ApplyFunctionToRotationBySpeedModule()
         {
-            ParticleSystem.RotationBySpeedModule module = _targetParticleReference.rotationBySpeed;
+            var module = _targetParticleReference.rotationBySpeed;
             switch (_targetCurves)
             {
                 case SexyCurvesCurveEnum.XYZ:
@@ -337,7 +345,7 @@ namespace SexyCurves.Utility
         /// </summary>
         private void ApplyFunctionToTextureSheetAnimationModule()
         {
-            ParticleSystem.SizeBySpeedModule module = _targetParticleReference.sizeBySpeed;
+            var module = _targetParticleReference.sizeBySpeed;
             module.size = MakeSexyCurve();
         }
 
@@ -347,7 +355,8 @@ namespace SexyCurves.Utility
         private void ApplyFunctionToStartLifetimeCurve()
         {
             //NOT_YET_POSSIBLE:
-            Debug.LogWarning("The Function 'ApplyFunctionToStartLifetimeCurve' doesn't have functionality yet, due to the lack of property exposure on the Unity Shuriken API part");
+            Debug.LogWarning(
+                "The Function 'ApplyFunctionToStartLifetimeCurve' doesn't have functionality yet, due to the lack of property exposure on the Unity Shuriken API part");
         }
 
         /// <summary>
@@ -356,16 +365,18 @@ namespace SexyCurves.Utility
         private void ApplyFunctionToStartRotationCurve()
         {
             //NOT_YET_POSSIBLE:
-            Debug.LogWarning("The Function 'ApplyFunctionToStartRotationCurve' doesn't have functionality yet, due to the lack of property exposure on the Unity Shuriken API part");
+            Debug.LogWarning(
+                "The Function 'ApplyFunctionToStartRotationCurve' doesn't have functionality yet, due to the lack of property exposure on the Unity Shuriken API part");
         }
 
         /// <summary>
-        ///    NOT YET POSSIBLE | Applies the chosen function to the startSizeCurve in the main module.
+        ///     NOT YET POSSIBLE | Applies the chosen function to the startSizeCurve in the main module.
         /// </summary>
         private void ApplyFunctionToStartSizeCurve()
         {
             //NOT_YET_POSSIBLE:
-            Debug.LogWarning("The Function 'ApplyFunctionToStartSizeCurve' doesn't have functionality yet, due to the lack of property exposure on the Unity Shuriken API part");
+            Debug.LogWarning(
+                "The Function 'ApplyFunctionToStartSizeCurve' doesn't have functionality yet, due to the lack of property exposure on the Unity Shuriken API part");
         }
 
         /// <summary>
@@ -374,12 +385,13 @@ namespace SexyCurves.Utility
         private void ApplyFunctionToStartSpeedCurve()
         {
             //NOT_YET_POSSIBLE:
-            Debug.LogWarning("The Function 'ApplyFunctionToStartSpeedCurve' doesn't have functionality yet, due to the lack of property exposure on the Unity Shuriken API part");
+            Debug.LogWarning(
+                "The Function 'ApplyFunctionToStartSpeedCurve' doesn't have functionality yet, due to the lack of property exposure on the Unity Shuriken API part");
         }
 
         private ParticleSystem.MinMaxCurve MakeSexyCurve()
         {
-            AnimationCurve animCurve = new AnimationCurve();
+            var animCurve = new AnimationCurve();
             //TODO: Add Smart KeyAmount on _keyAmount == 0
             if (_keyAmount == 1)
             {
@@ -392,22 +404,23 @@ namespace SexyCurves.Utility
             }
             else
             {
-                float stride = 1.0f/(_keyAmount - 1);
-                for (int i = 0; i < _keyAmount; ++i)
+                var stride = 1.0f/(_keyAmount - 1);
+                for (var i = 0; i < _keyAmount; ++i)
                 {
-                    float val = 0.0f;
+                    var val = 0.0f;
                     if (i == _keyAmount - 1)
                     {
-                        val = 1.0f; //avoid displacement due to floating point errors
+                        // Endpoint should always be at the maximal x value.
+                        val = 1.0f;
                     }
                     else
                     {
-                        val = i * stride;
+                        val = i*stride;
                     }
-                    animCurve.AddKey(val, GetFunctionDelegate()(val));
+                    animCurve.AddKey(val, GetFunctionDelegate()(val + _xDisplacement));
                 }
             }
-            ParticleSystem.MinMaxCurve curve = new ParticleSystem.MinMaxCurve(_scalar, animCurve);
+            var curve = new ParticleSystem.MinMaxCurve(_scalar, animCurve);
             return curve;
         }
 
@@ -475,6 +488,15 @@ namespace SexyCurves.Utility
         }
 
         /// <summary>
+        ///     Sets the selected curves displacement on the x-axis.
+        /// </summary>
+        /// <param name="displacementValue">the displacement on the x-axis</param>
+        public void SetXDisplacement(float displacementValue)
+        {
+            _xDisplacement = displacementValue;
+        }
+
+        /// <summary>
         ///     Getter returns target particle system.
         /// </summary>
         /// <returns>Target particle system.</returns>
@@ -483,8 +505,16 @@ namespace SexyCurves.Utility
             return _targetParticleReference;
         }
 
+        /// <summary>
+        ///     Returns the Delegate of the targeted function.
+        /// </summary>
+        /// <returns>target function delegate</returns>
         private Func<float, float> GetFunctionDelegate()
         {
+            if (_targetFunctionType == SexyCurvesFunctionTypeEnum.Cosine)
+            {
+                return HarmonicSineWave.CalculateHeightAtSecondAndConvertToCosine;
+            }
             return HarmonicSineWave.CalculateHeightAtSecond;
         }
 
@@ -540,6 +570,15 @@ namespace SexyCurves.Utility
         public float GetScalar()
         {
             return _scalar;
+        }
+
+        /// <summary>
+        ///     Returns the current function displacement on the x-axis
+        /// </summary>
+        /// <returns>the current functions displacement</returns>
+        public float GetXDisplacement()
+        {
+            return _xDisplacement;
         }
     }
 }
