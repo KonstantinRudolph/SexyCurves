@@ -3,7 +3,7 @@
 // Created at 13:19, on 27.06.2016
 // By Konstantin Rudolph
 // 
-// Last modified at 15:41, on 25.07.2016
+// Last modified at 16:52, on 25.07.2016
 // By Konstantin Rudolph
 
 using System;
@@ -41,14 +41,9 @@ namespace SexyCurves.Utility
         ///     Function returns the value of the sine wave (represented by the class) at a given time in seconds.
         /// </summary>
         /// <param name="seconds">The time in seconds</param>
-        /// <returns></returns>
+        /// <returns>Value of Function at seconds</returns>
         public float CalculateHeightAtSecond(float seconds)
         {
-            if (seconds < 0.0f)
-            {
-                throw new ArgumentOutOfRangeException("The seconds parameter cannot be smaller than 0.0f");
-            }
-
             var value = 0.0f;
 
             value = _amplitude*Mathf.Sin(2*Mathf.PI*_frequency*seconds) + _yDisplacement;
@@ -57,10 +52,10 @@ namespace SexyCurves.Utility
         }
 
         /// <summary>
-        ///     Since the sin(x) =
+        ///     Since the cos(x) = sin(x-90) we can use the harmonic sine wave class.
         /// </summary>
         /// <param name="seconds"></param>
-        /// <returns></returns>
+        /// <returns>Value of Function at seconds</returns>
         public float CalculateHeightAtSecondAndConvertToCosine(float seconds)
         {
             if (seconds < 0.0f)

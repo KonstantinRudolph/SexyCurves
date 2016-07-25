@@ -55,8 +55,8 @@ namespace SexyCurves.CustomEditors
         private void ExponentialSettingsGui()
         {
             EditorGUILayout.LabelField("Exponential Function Settings:");
-            EditorGUILayout.LabelField("Not yet supported!");
-            //f(x) = c* e^(a*x) //a may be another function if not a constant
+            _sexyCurvesManager.ExponentialGrowthFunction.SetStartQuantity(EditorGUILayout.FloatField("Start Quantity: ", _sexyCurvesManager.ExponentialGrowthFunction.GetStartQuantity()));
+            _sexyCurvesManager.ExponentialGrowthFunction.SetRate(EditorGUILayout.FloatField("Decay/Growth Rate: ", _sexyCurvesManager.ExponentialGrowthFunction.GetRate()));
         }
 
         private void PolynomialSettingsGui()
