@@ -1,10 +1,10 @@
 ﻿// HarmonicSineWave.cs - SexyCurves
 // 
-// Created at 13:58, on 14.06.2016
-// 
+// Created at 13:19, on 27.06.2016
 // By Konstantin Rudolph
 // 
-// Last modified at 14:11, on 14.06.2016
+// Last modified at 15:41, on 25.07.2016
+// By Konstantin Rudolph
 
 using System;
 using UnityEngine;
@@ -21,7 +21,7 @@ namespace SexyCurves.Utility
         /// <summary>
         ///     The amplitude of the sine wave.
         /// </summary>
-        private float _amplitude = 1.0f;
+        [Range(0.0f, 1.0f)] private float _amplitude = 0.5f;
 
         /// <summary>
         ///     The frequency defines the amount of oscillations per second.
@@ -31,11 +31,12 @@ namespace SexyCurves.Utility
         /// <summary>
         ///     The displacement on the y-axis.
         /// </summary>
-        private float _yDisplacement = 0.0f;
+        [Range(0.0f, 1.0f)] private float _yDisplacement = 0.5f;
 
         #endregion
 
         #region Functions
+
         /// <summary>
         ///     Function returns the value of the sine wave (represented by the class) at a given time in seconds.
         /// </summary>
@@ -48,9 +49,28 @@ namespace SexyCurves.Utility
                 throw new ArgumentOutOfRangeException("The seconds parameter cannot be smaller than 0.0f");
             }
 
-            float value = 0.0f;
+            var value = 0.0f;
 
             value = _amplitude*Mathf.Sin(2*Mathf.PI*_frequency*seconds) + _yDisplacement;
+
+            return value;
+        }
+
+        /// <summary>
+        ///     Since the sin(x) =
+        /// </summary>
+        /// <param name="seconds"></param>
+        /// <returns></returns>
+        public float CalculateHeightAtSecondAndConvertToCosine(float seconds)
+        {
+            if (seconds < 0.0f)
+            {
+                throw new ArgumentOutOfRangeException("The seconds parameter cannot be smaller than 0.0f");
+            }
+
+            var value = 0.0f;
+
+            value = _amplitude*Mathf.Sin(Mathf.PI/2.0f - 2*Mathf.PI*_frequency*seconds) + _yDisplacement;
 
             return value;
         }

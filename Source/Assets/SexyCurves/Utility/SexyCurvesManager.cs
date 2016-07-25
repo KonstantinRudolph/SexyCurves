@@ -1,11 +1,12 @@
 ﻿// SexyCurvesManager.cs - SexyCurves
 // 
-// Created at 1:52 PM, on 14.06.2016
-// 
+// Created at 13:52, on 14.06.2016
 // By Konstantin Rudolph
 // 
-// Last modified at 3:11 AM, on 16.06.2016
+// Last modified at 15:42, on 25.07.2016
+// By Konstantin Rudolph
 
+using System;
 using SexyCurves.Enumerators;
 using UnityEngine;
 
@@ -20,6 +21,11 @@ namespace SexyCurves.Utility
         ///     The amount of keys which shall be used on the curve.
         /// </summary>
         private uint _keyAmount = 1;
+
+        /// <summary>
+        ///     The Scale of the Curve System.
+        /// </summary>
+        [Range(0.1f, float.MaxValue)] private float _scalar = 1.0f;
 
         /// <summary>
         ///     The axis-curves which shall be modified.
@@ -47,6 +53,23 @@ namespace SexyCurves.Utility
         /// </summary>
         private SexyCurvesMainModuleEnum _targetSubMainModule = SexyCurvesMainModuleEnum.StartLifetime;
 
+        /// <summary>
+        ///     The functions displacement on the x-axis.
+        /// </summary>
+        private float _xDisplacement;
+
+        /// <summary>
+        ///     Constructor.
+        /// </summary>
+        public SexyCurvesManager()
+        {
+            HarmonicSineWave = new HarmonicSineWave();
+        }
+
+        /// <summary>
+        ///     HarminicSineWave Property.
+        /// </summary>
+        public HarmonicSineWave HarmonicSineWave { get; private set; }
 
         /// <summary>
         ///     Applies the chosen function to the chosen module and curves.
@@ -55,11 +78,10 @@ namespace SexyCurves.Utility
         {
             if (!_targetParticleReference)
             {
-                Debug.LogWarning("Couldn't apply function to curves particle system isn't set.");
+                Debug.LogError("Couldn't apply function to curves particle system isn't set.");
                 return;
             }
 
-            Debug.LogWarning("Applying Function to Curves ... not yet!");
             switch (_targetModule)
             {
                 case SexyCurvesModuleEnum.MainModule:
@@ -95,8 +117,6 @@ namespace SexyCurves.Utility
                 case SexyCurvesModuleEnum.TextureSheetAnimationModule:
                     ApplyFunctionToTextureSheetAnimationModule();
                     break;
-                default:
-                    break;
             }
         }
 
@@ -119,8 +139,6 @@ namespace SexyCurves.Utility
                 case SexyCurvesMainModuleEnum.StartSpeed:
                     ApplyFunctionToStartSpeedCurve();
                     break;
-                default:
-                    break;
             }
         }
 
@@ -129,11 +147,9 @@ namespace SexyCurves.Utility
         /// </summary>
         private void ApplyFunctionToEmissionModule()
         {
-            //TODO:
-            Debug.LogWarning("Unimplemented Method ApplyFunctionToEmissionModule in SexyCurvesManager called!");
-            
-            ParticleSystem.EmissionModule module = _targetParticleReference.emission;
-            module.rate = MakeSexyCurve();
+            var module = _targetParticleReference.emission;
+            var c = MakeSexyCurve();
+            module.rate = c;
         }
 
         /// <summary>
@@ -141,9 +157,31 @@ namespace SexyCurves.Utility
         /// </summary>
         private void ApplyFunctionToVelocityOverLifetimeModule()
         {
-            //TODO:
-            Debug.LogWarning(
-                "Unimplemented Method ApplyFunctionToVelocityOverLifetimeModule in SexyCurvesManager called!");
+            var module = _targetParticleReference.velocityOverLifetime;
+            switch (_targetCurves)
+            {
+                case SexyCurvesCurveEnum.XYZ:
+                    module.x = module.y = module.z = MakeSexyCurve();
+                    break;
+                case SexyCurvesCurveEnum.XY:
+                    module.x = module.y = MakeSexyCurve();
+                    break;
+                case SexyCurvesCurveEnum.XZ:
+                    module.x = module.z = MakeSexyCurve();
+                    break;
+                case SexyCurvesCurveEnum.YZ:
+                    module.y = module.z = MakeSexyCurve();
+                    break;
+                case SexyCurvesCurveEnum.X:
+                    module.x = MakeSexyCurve();
+                    break;
+                case SexyCurvesCurveEnum.Y:
+                    module.y = MakeSexyCurve();
+                    break;
+                case SexyCurvesCurveEnum.Z:
+                    module.z = MakeSexyCurve();
+                    break;
+            }
         }
 
         /// <summary>
@@ -151,9 +189,31 @@ namespace SexyCurves.Utility
         /// </summary>
         private void ApplyFunctionToLimitVelocityOverLifetimeModule()
         {
-            //TODO:
-            Debug.LogWarning(
-                "Unimplemented Method ApplyFunctionToLimitVelocityOverLifetimeModule in SexyCurvesManager called!");
+            var module = _targetParticleReference.limitVelocityOverLifetime;
+            switch (_targetCurves)
+            {
+                case SexyCurvesCurveEnum.XYZ:
+                    module.limitX = module.limitY = module.limitZ = MakeSexyCurve();
+                    break;
+                case SexyCurvesCurveEnum.XY:
+                    module.limitX = module.limitY = MakeSexyCurve();
+                    break;
+                case SexyCurvesCurveEnum.XZ:
+                    module.limitX = module.limitZ = MakeSexyCurve();
+                    break;
+                case SexyCurvesCurveEnum.YZ:
+                    module.limitY = module.limitZ = MakeSexyCurve();
+                    break;
+                case SexyCurvesCurveEnum.X:
+                    module.limitX = MakeSexyCurve();
+                    break;
+                case SexyCurvesCurveEnum.Y:
+                    module.limitY = MakeSexyCurve();
+                    break;
+                case SexyCurvesCurveEnum.Z:
+                    module.limitZ = MakeSexyCurve();
+                    break;
+            }
         }
 
         /// <summary>
@@ -161,8 +221,8 @@ namespace SexyCurves.Utility
         /// </summary>
         private void ApplyFunctionToInheritVelocityModule()
         {
-            //TODO: apply axis X and remove axis field in window class!
-            Debug.LogWarning("Unimplemented Method ApplyFunctionToInheritVelocityModule in SexyCurvesManager called!");
+            var module = _targetParticleReference.inheritVelocity;
+            module.curve = MakeSexyCurve();
         }
 
         /// <summary>
@@ -170,8 +230,31 @@ namespace SexyCurves.Utility
         /// </summary>
         private void ApplyFunctionToForceOverLifetimeModule()
         {
-            //TODO:
-            Debug.LogWarning("Unimplemented Method ApplyFunctionToForceOverLifetimeModule in SexyCurvesManager called!");
+            var module = _targetParticleReference.forceOverLifetime;
+            switch (_targetCurves)
+            {
+                case SexyCurvesCurveEnum.XYZ:
+                    module.x = module.y = module.z = MakeSexyCurve();
+                    break;
+                case SexyCurvesCurveEnum.XY:
+                    module.x = module.y = MakeSexyCurve();
+                    break;
+                case SexyCurvesCurveEnum.XZ:
+                    module.x = module.z = MakeSexyCurve();
+                    break;
+                case SexyCurvesCurveEnum.YZ:
+                    module.y = module.z = MakeSexyCurve();
+                    break;
+                case SexyCurvesCurveEnum.X:
+                    module.x = MakeSexyCurve();
+                    break;
+                case SexyCurvesCurveEnum.Y:
+                    module.y = MakeSexyCurve();
+                    break;
+                case SexyCurvesCurveEnum.Z:
+                    module.z = MakeSexyCurve();
+                    break;
+            }
         }
 
         /// <summary>
@@ -179,8 +262,8 @@ namespace SexyCurves.Utility
         /// </summary>
         private void ApplyFunctionToSizeOverLifetimeModule()
         {
-            //TODO:
-            Debug.LogWarning("Unimplemented Method ApplyFunctionToSizeOverLifetimeModule in SexyCurvesManager called!");
+            var module = _targetParticleReference.sizeOverLifetime;
+            module.size = MakeSexyCurve();
         }
 
         /// <summary>
@@ -188,8 +271,8 @@ namespace SexyCurves.Utility
         /// </summary>
         private void ApplyFunctionToSizeBySpeedModule()
         {
-            //TODO:
-            Debug.LogWarning("Unimplemented Method ApplyFunctionToSizeBySpeedModule in SexyCurvesManager called!");
+            var module = _targetParticleReference.sizeBySpeed;
+            module.size = MakeSexyCurve();
         }
 
         /// <summary>
@@ -197,9 +280,31 @@ namespace SexyCurves.Utility
         /// </summary>
         private void ApplyFunctionToRotationOverLifetimeModule()
         {
-            //TODO:
-            Debug.LogWarning(
-                "Unimplemented Method ApplyFunctionToRotationOverLifetimeModule in SexyCurvesManager called!");
+            var module = _targetParticleReference.rotationOverLifetime;
+            switch (_targetCurves)
+            {
+                case SexyCurvesCurveEnum.XYZ:
+                    module.x = module.y = module.z = MakeSexyCurve();
+                    break;
+                case SexyCurvesCurveEnum.XY:
+                    module.x = module.y = MakeSexyCurve();
+                    break;
+                case SexyCurvesCurveEnum.XZ:
+                    module.x = module.z = MakeSexyCurve();
+                    break;
+                case SexyCurvesCurveEnum.YZ:
+                    module.y = module.z = MakeSexyCurve();
+                    break;
+                case SexyCurvesCurveEnum.X:
+                    module.x = MakeSexyCurve();
+                    break;
+                case SexyCurvesCurveEnum.Y:
+                    module.y = MakeSexyCurve();
+                    break;
+                case SexyCurvesCurveEnum.Z:
+                    module.z = MakeSexyCurve();
+                    break;
+            }
         }
 
         /// <summary>
@@ -207,8 +312,31 @@ namespace SexyCurves.Utility
         /// </summary>
         private void ApplyFunctionToRotationBySpeedModule()
         {
-            //TODO:
-            Debug.LogWarning("Unimplemented Method ApplyFunctionToRotationBySpeedModule in SexyCurvesManager called!");
+            var module = _targetParticleReference.rotationBySpeed;
+            switch (_targetCurves)
+            {
+                case SexyCurvesCurveEnum.XYZ:
+                    module.x = module.y = module.z = MakeSexyCurve();
+                    break;
+                case SexyCurvesCurveEnum.XY:
+                    module.x = module.y = MakeSexyCurve();
+                    break;
+                case SexyCurvesCurveEnum.XZ:
+                    module.x = module.z = MakeSexyCurve();
+                    break;
+                case SexyCurvesCurveEnum.YZ:
+                    module.y = module.z = MakeSexyCurve();
+                    break;
+                case SexyCurvesCurveEnum.X:
+                    module.x = MakeSexyCurve();
+                    break;
+                case SexyCurvesCurveEnum.Y:
+                    module.y = MakeSexyCurve();
+                    break;
+                case SexyCurvesCurveEnum.Z:
+                    module.z = MakeSexyCurve();
+                    break;
+            }
         }
 
         /// <summary>
@@ -216,8 +344,8 @@ namespace SexyCurves.Utility
         /// </summary>
         private void ApplyFunctionToTextureSheetAnimationModule()
         {
-            //TODO:
-            Debug.LogWarning("Unimplemented Method ApplyFunctionToTextureSheetAnimationModule in SexyCurvesManager called!");
+            var module = _targetParticleReference.sizeBySpeed;
+            module.size = MakeSexyCurve();
         }
 
         /// <summary>
@@ -226,7 +354,8 @@ namespace SexyCurves.Utility
         private void ApplyFunctionToStartLifetimeCurve()
         {
             //NOT_YET_POSSIBLE:
-            Debug.LogWarning("The Function 'ApplyFunctionToStartLifetimeCurve' doesn't have functionality yet, due to the lack of property exposure on the Unity Shuriken API part");
+            Debug.LogWarning(
+                "The Function 'ApplyFunctionToStartLifetimeCurve' doesn't have functionality yet, due to the lack of property exposure on the Unity Shuriken API part");
         }
 
         /// <summary>
@@ -235,16 +364,18 @@ namespace SexyCurves.Utility
         private void ApplyFunctionToStartRotationCurve()
         {
             //NOT_YET_POSSIBLE:
-            Debug.LogWarning("The Function 'ApplyFunctionToStartRotationCurve' doesn't have functionality yet, due to the lack of property exposure on the Unity Shuriken API part");
+            Debug.LogWarning(
+                "The Function 'ApplyFunctionToStartRotationCurve' doesn't have functionality yet, due to the lack of property exposure on the Unity Shuriken API part");
         }
 
         /// <summary>
-        ///    NOT YET POSSIBLE | Applies the chosen function to the startSizeCurve in the main module.
+        ///     NOT YET POSSIBLE | Applies the chosen function to the startSizeCurve in the main module.
         /// </summary>
         private void ApplyFunctionToStartSizeCurve()
         {
             //NOT_YET_POSSIBLE:
-            Debug.LogWarning("The Function 'ApplyFunctionToStartSizeCurve' doesn't have functionality yet, due to the lack of property exposure on the Unity Shuriken API part");
+            Debug.LogWarning(
+                "The Function 'ApplyFunctionToStartSizeCurve' doesn't have functionality yet, due to the lack of property exposure on the Unity Shuriken API part");
         }
 
         /// <summary>
@@ -253,16 +384,60 @@ namespace SexyCurves.Utility
         private void ApplyFunctionToStartSpeedCurve()
         {
             //NOT_YET_POSSIBLE:
-            Debug.LogWarning("The Function 'ApplyFunctionToStartSpeedCurve' doesn't have functionality yet, due to the lack of property exposure on the Unity Shuriken API part");
+            Debug.LogWarning(
+                "The Function 'ApplyFunctionToStartSpeedCurve' doesn't have functionality yet, due to the lack of property exposure on the Unity Shuriken API part");
         }
 
+        /// <summary>
+        ///     Returns the curve created by the chosen settings.
+        /// </summary>
+        /// <returns>ParticleSystem.MinMaxCurve</returns>
         private ParticleSystem.MinMaxCurve MakeSexyCurve()
         {
-            ParticleSystem.MinMaxCurve curve = new ParticleSystem.MinMaxCurve();
-
-            //TODO: apply target function
-
+            var animCurve = new AnimationCurve();
+            //TODO: Add Smart KeyAmount on _keyAmount == 0
+            if (_keyAmount == 1)
+            {
+                animCurve.AddKey(0.0f, GetFunctionDelegate()(0.0f));
+            }
+            else if (_keyAmount == 2)
+            {
+                animCurve.AddKey(0.0f, GetFunctionDelegate()(0.0f));
+                animCurve.AddKey(1.0f, GetFunctionDelegate()(1.0f));
+            }
+            else
+            {
+                var stride = 1.0f/(_keyAmount - 1);
+                for (var i = 0; i < _keyAmount; ++i)
+                {
+                    var val = 0.0f;
+                    if (i == _keyAmount - 1)
+                    {
+                        // Endpoint should always be at the maximal x value.
+                        val = 1.0f;
+                    }
+                    else
+                    {
+                        val = i*stride;
+                    }
+                    animCurve.AddKey(val, GetFunctionDelegate()(val + _xDisplacement));
+                }
+            }
+            var curve = new ParticleSystem.MinMaxCurve(_scalar, animCurve);
             return curve;
+        }
+
+        /// <summary>
+        ///     Returns the Delegate of the targeted function.
+        /// </summary>
+        /// <returns>target function delegate</returns>
+        private Func<float, float> GetFunctionDelegate()
+        {
+            if (_targetFunctionType == SexyCurvesFunctionTypeEnum.Cosine)
+            {
+                return HarmonicSineWave.CalculateHeightAtSecondAndConvertToCosine;
+            }
+            return HarmonicSineWave.CalculateHeightAtSecond;
         }
 
         /// <summary>
@@ -313,10 +488,28 @@ namespace SexyCurves.Utility
         /// <summary>
         ///     Sets the amount of keys which shall be used on the curve.
         /// </summary>
-        /// <param name="amount">The amount of keys</param>
+        /// <param name="amount">The amount of keys.</param>
         public void SetKeyAmount(uint amount)
         {
             _keyAmount = amount;
+        }
+
+        /// <summary>
+        ///     Sets the scalar of the curve.
+        /// </summary>
+        /// <param name="scalar">the new scalar value.</param>
+        public void SetScalar(float scalar)
+        {
+            _scalar = scalar;
+        }
+
+        /// <summary>
+        ///     Sets the selected curves displacement on the x-axis.
+        /// </summary>
+        /// <param name="displacementValue">the displacement on the x-axis</param>
+        public void SetXDisplacement(float displacementValue)
+        {
+            _xDisplacement = displacementValue;
         }
 
         /// <summary>
@@ -371,6 +564,24 @@ namespace SexyCurves.Utility
         public uint GetKeyAmount()
         {
             return _keyAmount;
+        }
+
+        /// <summary>
+        ///     Returns the current scalar of the curve.
+        /// </summary>
+        /// <returns></returns>
+        public float GetScalar()
+        {
+            return _scalar;
+        }
+
+        /// <summary>
+        ///     Returns the current function displacement on the x-axis
+        /// </summary>
+        /// <returns>the current functions displacement</returns>
+        public float GetXDisplacement()
+        {
+            return _xDisplacement;
         }
     }
 }
