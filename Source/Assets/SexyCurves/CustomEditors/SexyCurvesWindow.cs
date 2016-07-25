@@ -52,26 +52,17 @@ namespace SexyCurves.CustomEditors
             _sexyCurvesManager.HarmonicSineWave.SetYDisplacement(EditorGUILayout.FloatField("Y-Displacement:", _sexyCurvesManager.HarmonicSineWave.GetYDisplacement()));
         }
 
-        private void HarmonicWaveGui()
-        {
-            EditorGUILayout.LabelField(
-                _sexyCurvesManager.GetTargetFunction() == SexyCurvesFunctionTypeEnum.Sine
-                    ? "Harmonic Sine Wave Settings"
-                    : "Harmonic Cosine Wave");
-            //_amplitude = EditorGUILayout.FloatField("Amplitude:", _amplitude);
-            //_frequency = EditorGUILayout.FloatField("Frequency:", _frequency);
-            //SinusWave: y(t) = y_0 * sin(2*PI*f * t)
-        }
-
         private void ExponentialSettingsGui()
         {
             EditorGUILayout.LabelField("Exponential Function Settings:");
+            EditorGUILayout.LabelField("Not yet supported!");
             //f(x) = c* e^(a*x) //a may be another function if not a constant
         }
 
         private void PolynomialSettingsGui()
         {
             EditorGUILayout.LabelField("Polynomial Function Settings:");
+            EditorGUILayout.LabelField("Not yet supported!");
             //f(x) = a*x^n + b*x^(n-1) + ... + Y*x^0
         }
 

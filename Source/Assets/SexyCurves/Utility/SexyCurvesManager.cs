@@ -1,10 +1,10 @@
 ﻿// SexyCurvesManager.cs - SexyCurves
 // 
-// Created at 1:52 PM, on 14.06.2016
-// 
+// Created at 13:52, on 14.06.2016
 // By Konstantin Rudolph
 // 
-// Last modified at 3:11 AM, on 16.06.2016
+// Last modified at 15:42, on 25.07.2016
+// By Konstantin Rudolph
 
 using System;
 using SexyCurves.Enumerators;
@@ -56,7 +56,7 @@ namespace SexyCurves.Utility
         /// <summary>
         ///     The functions displacement on the x-axis.
         /// </summary>
-        private float _xDisplacement = 0.0f;
+        private float _xDisplacement;
 
         /// <summary>
         ///     Constructor.
@@ -78,11 +78,10 @@ namespace SexyCurves.Utility
         {
             if (!_targetParticleReference)
             {
-                Debug.LogWarning("Couldn't apply function to curves particle system isn't set.");
+                Debug.LogError("Couldn't apply function to curves particle system isn't set.");
                 return;
             }
 
-            Debug.LogWarning("Applying Function to Curves ... not yet!");
             switch (_targetModule)
             {
                 case SexyCurvesModuleEnum.MainModule:
@@ -389,6 +388,10 @@ namespace SexyCurves.Utility
                 "The Function 'ApplyFunctionToStartSpeedCurve' doesn't have functionality yet, due to the lack of property exposure on the Unity Shuriken API part");
         }
 
+        /// <summary>
+        ///     Returns the curve created by the chosen settings.
+        /// </summary>
+        /// <returns>ParticleSystem.MinMaxCurve</returns>
         private ParticleSystem.MinMaxCurve MakeSexyCurve()
         {
             var animCurve = new AnimationCurve();
@@ -422,6 +425,19 @@ namespace SexyCurves.Utility
             }
             var curve = new ParticleSystem.MinMaxCurve(_scalar, animCurve);
             return curve;
+        }
+
+        /// <summary>
+        ///     Returns the Delegate of the targeted function.
+        /// </summary>
+        /// <returns>target function delegate</returns>
+        private Func<float, float> GetFunctionDelegate()
+        {
+            if (_targetFunctionType == SexyCurvesFunctionTypeEnum.Cosine)
+            {
+                return HarmonicSineWave.CalculateHeightAtSecondAndConvertToCosine;
+            }
+            return HarmonicSineWave.CalculateHeightAtSecond;
         }
 
         /// <summary>
@@ -503,19 +519,6 @@ namespace SexyCurves.Utility
         public ParticleSystem GetTargetParticleSystem()
         {
             return _targetParticleReference;
-        }
-
-        /// <summary>
-        ///     Returns the Delegate of the targeted function.
-        /// </summary>
-        /// <returns>target function delegate</returns>
-        private Func<float, float> GetFunctionDelegate()
-        {
-            if (_targetFunctionType == SexyCurvesFunctionTypeEnum.Cosine)
-            {
-                return HarmonicSineWave.CalculateHeightAtSecondAndConvertToCosine;
-            }
-            return HarmonicSineWave.CalculateHeightAtSecond;
         }
 
         /// <summary>
