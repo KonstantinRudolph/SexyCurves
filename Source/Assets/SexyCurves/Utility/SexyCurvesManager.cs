@@ -25,7 +25,8 @@ namespace SexyCurves.Utility
         /// <summary>
         ///     The Scale of the Curve System.
         /// </summary>
-        [Range(0.1f, float.MaxValue)] private float _scalar = 1.0f;
+        [Range(0.1f, float.MaxValue)]
+        private float _scalar = 1.0f;
 
         /// <summary>
         ///     The axis-curves which shall be modified.
@@ -64,12 +65,18 @@ namespace SexyCurves.Utility
         public SexyCurvesManager()
         {
             HarmonicSineWave = new HarmonicSineWave();
+            ExponentialGrowthFunction = new ExponentialGrowth();
         }
 
         /// <summary>
-        ///     HarminicSineWave Property.
+        ///     HarmonicSineWave Property.
         /// </summary>
         public HarmonicSineWave HarmonicSineWave { get; private set; }
+
+        /// <summary>
+        ///     ExponentialGrowth Property.
+        /// </summary>
+        public ExponentialGrowth ExponentialGrowthFunction { get; private set; }
 
         /// <summary>
         ///     Applies the chosen function to the chosen module and curves.
@@ -395,7 +402,8 @@ namespace SexyCurves.Utility
         private ParticleSystem.MinMaxCurve MakeSexyCurve()
         {
             var animCurve = new AnimationCurve();
-            //TODO: Add Smart KeyAmount on _keyAmount == 0
+            // TODO: Add Smart KeyAmount if _keyAmount == 0
+            // -> calculate minimal amount of keys and best positions based on function-behavior
             if (_keyAmount == 1)
             {
                 animCurve.AddKey(0.0f, GetFunctionDelegate()(0.0f));
@@ -436,6 +444,10 @@ namespace SexyCurves.Utility
             if (_targetFunctionType == SexyCurvesFunctionTypeEnum.Cosine)
             {
                 return HarmonicSineWave.CalculateHeightAtSecondAndConvertToCosine;
+            }
+            if (_targetFunctionType == SexyCurvesFunctionTypeEnum.Exponential)
+            {
+                return ExponentialGrowthFunction.CalculateHeightAtSecond;
             }
             return HarmonicSineWave.CalculateHeightAtSecond;
         }

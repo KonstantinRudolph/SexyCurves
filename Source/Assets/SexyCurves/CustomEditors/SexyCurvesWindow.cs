@@ -1,10 +1,10 @@
 ﻿// SexyCurvesWindow.cs - SexyCurves
 // 
-// Created at 1:52 PM, on 14.06.2016
-// 
+// Created at 13:52, on 14.06.2016
 // By Konstantin Rudolph
 // 
-// Last modified at 1:46 AM, on 16.06.2016
+// Last modified at 17:43, on 25.07.2016
+// By Konstantin Rudolph
 
 using JetBrains.Annotations;
 using SexyCurves.Enumerators;
@@ -31,34 +31,48 @@ namespace SexyCurves.CustomEditors
         #region privateFunctions
 
         /// <summary>
-        ///     Creates the GUI for the cosine settings.
+        ///     Creates the GUI-part for the cosine settings.
         /// </summary>
         private void CosineSettingsGui()
         {
             EditorGUILayout.LabelField("Cosine Function Settings:");
-            _sexyCurvesManager.HarmonicSineWave.SetAmplitude(EditorGUILayout.FloatField("Amplitude:", _sexyCurvesManager.HarmonicSineWave.GetAmplitude()));
-            _sexyCurvesManager.HarmonicSineWave.SetFrequency(EditorGUILayout.FloatField("Frequency:", _sexyCurvesManager.HarmonicSineWave.GetFrequency()));
-            _sexyCurvesManager.HarmonicSineWave.SetYDisplacement(EditorGUILayout.FloatField("Y-Displacement:", _sexyCurvesManager.HarmonicSineWave.GetYDisplacement()));
+            _sexyCurvesManager.HarmonicSineWave.SetAmplitude(EditorGUILayout.FloatField("Amplitude:",
+                _sexyCurvesManager.HarmonicSineWave.GetAmplitude()));
+            _sexyCurvesManager.HarmonicSineWave.SetFrequency(EditorGUILayout.FloatField("Frequency:",
+                _sexyCurvesManager.HarmonicSineWave.GetFrequency()));
+            _sexyCurvesManager.HarmonicSineWave.SetYDisplacement(EditorGUILayout.FloatField("Y-Displacement:",
+                _sexyCurvesManager.HarmonicSineWave.GetYDisplacement()));
         }
 
         /// <summary>
-        ///     Creates the GUI for the sine settings.
+        ///     Creates the GUI-part for the sine settings.
         /// </summary>
         private void SineSettingsGui()
         {
             EditorGUILayout.LabelField("Sine Function Settings:");
-            _sexyCurvesManager.HarmonicSineWave.SetAmplitude(EditorGUILayout.FloatField("Amplitude:", _sexyCurvesManager.HarmonicSineWave.GetAmplitude()));
-            _sexyCurvesManager.HarmonicSineWave.SetFrequency(EditorGUILayout.FloatField("Frequency:", _sexyCurvesManager.HarmonicSineWave.GetFrequency()));
-            _sexyCurvesManager.HarmonicSineWave.SetYDisplacement(EditorGUILayout.FloatField("Y-Displacement:", _sexyCurvesManager.HarmonicSineWave.GetYDisplacement()));
+            _sexyCurvesManager.HarmonicSineWave.SetAmplitude(EditorGUILayout.FloatField("Amplitude:",
+                _sexyCurvesManager.HarmonicSineWave.GetAmplitude()));
+            _sexyCurvesManager.HarmonicSineWave.SetFrequency(EditorGUILayout.FloatField("Frequency:",
+                _sexyCurvesManager.HarmonicSineWave.GetFrequency()));
+            _sexyCurvesManager.HarmonicSineWave.SetYDisplacement(EditorGUILayout.FloatField("Y-Displacement:",
+                _sexyCurvesManager.HarmonicSineWave.GetYDisplacement()));
         }
 
+        /// <summary>
+        ///     Creates the GUI-part for the exponential settings.
+        /// </summary>
         private void ExponentialSettingsGui()
         {
             EditorGUILayout.LabelField("Exponential Function Settings:");
-            EditorGUILayout.LabelField("Not yet supported!");
-            //f(x) = c* e^(a*x) //a may be another function if not a constant
+            _sexyCurvesManager.ExponentialGrowthFunction.SetStartQuantity(EditorGUILayout.FloatField(
+                "Start Quantity: ", _sexyCurvesManager.ExponentialGrowthFunction.GetStartQuantity()));
+            _sexyCurvesManager.ExponentialGrowthFunction.SetRate(EditorGUILayout.FloatField("Decay/Growth Rate: ",
+                _sexyCurvesManager.ExponentialGrowthFunction.GetRate()));
         }
 
+        /// <summary>
+        ///     Creates the GUI-part for the polynomial settings.
+        /// </summary>
         private void PolynomialSettingsGui()
         {
             EditorGUILayout.LabelField("Polynomial Function Settings:");
@@ -90,13 +104,14 @@ namespace SexyCurves.CustomEditors
         // ReSharper disable once ArrangeTypeMemberModifiers
         void OnGUI()
         {
+            // General GUI Creation/Handling
             _sexyCurvesManager.SetTargetParticleSystem(
                 EditorGUILayout.ObjectField(
                     new GUIContent(
                         "Target Particle System:",
                         "The target particle system on which one or more curve shall be modified."),
                     _sexyCurvesManager.GetTargetParticleSystem(),
-                    typeof (ParticleSystem),
+                    typeof(ParticleSystem),
                     true) as ParticleSystem);
 
             EditorGUILayout.BeginHorizontal();
@@ -121,12 +136,12 @@ namespace SexyCurves.CustomEditors
             }
 
             //evaluate if different axes are needed then add to ui
-            //TODO: evaluate
+            //TODO: evaluate //-> if there's only on axis yet, every droptdown affects that one. Disable Droptdown if there's only one.
             _sexyCurvesManager.SetTargetCurves(
-            (SexyCurvesCurveEnum)
-                EditorGUILayout.EnumPopup(
-                    new GUIContent("Target Axis:", "Which axis-curves shall be modified."),
-                    _sexyCurvesManager.GetTargetCurves()));
+                (SexyCurvesCurveEnum)
+                    EditorGUILayout.EnumPopup(
+                        new GUIContent("Target Axis:", "Which axis-curves shall be modified."),
+                        _sexyCurvesManager.GetTargetCurves()));
 
 
             _sexyCurvesManager.SetTargetFunction(
@@ -136,22 +151,23 @@ namespace SexyCurves.CustomEditors
                             "Target Function:",
                             "Which function-type shall be applied onto the selected curve(s)."),
                         _sexyCurvesManager.GetTargetFunction()));
-            int amount = EditorGUILayout.IntField(
+            var amount = EditorGUILayout.IntField(
                 new GUIContent("Key Amount:", "The amount of keys which shall be applied."),
                 (int) _sexyCurvesManager.GetKeyAmount());
 
             if (amount >= 1)
             {
-                _sexyCurvesManager.SetKeyAmount((uint)amount);
+                _sexyCurvesManager.SetKeyAmount((uint) amount);
             }
             else
             {
                 Debug.LogWarning("The key amount has to be at least 1, which will result in a line.");
                 Repaint();
             }
-
+            // !General GUI Creation/Handling
+            // Function Specific GUI
             EditorGUILayout.Separator();
-            float tempScalar = EditorGUILayout.FloatField("Curve Scalar:", _sexyCurvesManager.GetScalar());
+            var tempScalar = EditorGUILayout.FloatField("Curve Scalar:", _sexyCurvesManager.GetScalar());
             if (tempScalar >= 0.1f)
             {
                 _sexyCurvesManager.SetScalar(tempScalar);
@@ -172,8 +188,9 @@ namespace SexyCurves.CustomEditors
                     PolynomialSettingsGui();
                     break;
             }
+            // !Function Specific GUI
 
-            float tempXDisplacement = EditorGUILayout.FloatField("X-Displacement :", _sexyCurvesManager.GetXDisplacement());
+            var tempXDisplacement = EditorGUILayout.FloatField("X-Displacement :", _sexyCurvesManager.GetXDisplacement());
             _sexyCurvesManager.SetXDisplacement(tempXDisplacement);
 
             if (GUILayout.Button("Apply Function"))
