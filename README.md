@@ -19,7 +19,7 @@ You can:
 
 Import the UnityPackage into your Unity-Project.
 
-In the menubar be created a new tab named 'Sexy Curves', you can open the SexyCurves Editor Extension by opening the menu entry and clicking on 'Sexy Curves Window'.
+In the menubar will be a new tab named 'Sexy Curves', you can open the SexyCurves Editor Extension by opening the menu entry and clicking on 'Sexy Curves Window'.
 The created window can be dragged around and docked, just like any other Unity editor window.
 
 In the newly created window you can drag and drop an existing particle system onto the 'Target Particle System' field.
