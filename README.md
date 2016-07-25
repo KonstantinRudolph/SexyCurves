@@ -12,8 +12,8 @@ SexyCurves is a small, free open-source Unity-Editor Extension for the generatio
 
 You can:
 
-* Download BINARIES or the UnityPackage from the [Releases](https://github.com/KonstantinRudolph/SexyCurves/releases) page
-* checkout SOURCES from this repository
+* Download the UnityPackage from the [Releases](https://github.com/KonstantinRudolph/SexyCurves/releases) page
+* Checkout SOURCES from this repository
 
 ## Usage
 
