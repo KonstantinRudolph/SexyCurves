@@ -458,11 +458,20 @@ namespace SexyCurves.Utility
             {
                 return HarmonicSineWave.CalculateHeightAtSecondAndConvertToCosine;
             }
-            if (_targetFunctionType == SexyCurvesFunctionTypeEnum.Exponential)
+            else if (_targetFunctionType == SexyCurvesFunctionTypeEnum.Sine)
+            {
+                return HarmonicSineWave.CalculateHeightAtSecond;
+            }
+            else if (_targetFunctionType == SexyCurvesFunctionTypeEnum.Exponential)
             {
                 return ExponentialGrowthFunction.CalculateHeightAtSecond;
             }
-            return HarmonicSineWave.CalculateHeightAtSecond;
+            else if (_targetFunctionType == SexyCurvesFunctionTypeEnum.Polynomial)
+            {
+                Debug.LogWarning("Polynomial function isn't supported yet.");
+                return j => 0;
+            }
+            return j => 0;
         }
 
         /// <summary>
