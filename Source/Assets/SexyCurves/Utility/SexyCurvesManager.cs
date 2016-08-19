@@ -18,6 +18,19 @@ namespace SexyCurves.Utility
     public class SexyCurvesManager
     {
         /// <summary>
+        ///     The single instance of the SexyCurvesManager.
+        /// </summary>
+        private static SexyCurvesManager _instance;
+
+        /// <summary>
+        ///     The instance property.
+        /// </summary>
+        public static SexyCurvesManager Instance
+        {
+            get { return _instance ?? (_instance = new SexyCurvesManager()); }
+        }
+
+        /// <summary>
         ///     The amount of keys which shall be used on the curve.
         /// </summary>
         private uint _keyAmount = 1;
@@ -62,7 +75,7 @@ namespace SexyCurves.Utility
         /// <summary>
         ///     Constructor.
         /// </summary>
-        public SexyCurvesManager()
+        private SexyCurvesManager()
         {
             HarmonicSineWave = new HarmonicSineWave();
             ExponentialGrowthFunction = new ExponentialGrowth();
@@ -445,11 +458,20 @@ namespace SexyCurves.Utility
             {
                 return HarmonicSineWave.CalculateHeightAtSecondAndConvertToCosine;
             }
-            if (_targetFunctionType == SexyCurvesFunctionTypeEnum.Exponential)
+            else if (_targetFunctionType == SexyCurvesFunctionTypeEnum.Sine)
+            {
+                return HarmonicSineWave.CalculateHeightAtSecond;
+            }
+            else if (_targetFunctionType == SexyCurvesFunctionTypeEnum.Exponential)
             {
                 return ExponentialGrowthFunction.CalculateHeightAtSecond;
             }
-            return HarmonicSineWave.CalculateHeightAtSecond;
+            else if (_targetFunctionType == SexyCurvesFunctionTypeEnum.Polynomial)
+            {
+                Debug.LogWarning("Polynomial function isn't supported yet.");
+                return j => 0;
+            }
+            return j => 0;
         }
 
         /// <summary>
