@@ -24,7 +24,7 @@ namespace SexyCurves.CustomEditors
         /// <summary>
         ///     The manager object wich will modify the target particle system.
         /// </summary>
-        private readonly SexyCurvesManager _sexyCurvesManager = new SexyCurvesManager();
+        private readonly SexyCurvesManager _sexyCurvesManager = SexyCurvesManager.Instance;
 
         #endregion
 
