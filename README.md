@@ -35,10 +35,10 @@ If you're happy with your changes apply them to the targeted curves by pressing 
 
 ## Versioning
 
-* Version numbers are specified as MAJOR.MINOR.PATCH
-* MAJOR version increases indicate incompatible changes with respect to the public GameMath API.
-* MINOR version increases indicate new functionality that are backwards-compatible.
-* PATCH version increases indicate backwards-compatible bug fixes.
+* Version numbers are specified as MAJOR.MINOR.MISC
+* MAJOR version increases indicate new features.
+* MINOR version increases indicate new bugfixes.
+* MISC version increases indicate minor changes like comments.
 
 ## Contributors
 
